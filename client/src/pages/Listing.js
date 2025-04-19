@@ -7,7 +7,7 @@ import 'swiper/css/bundle'
 import { FaShare, FaBath, FaBed, FaChair, FaMapMarkerAlt, FaParking, FaRegHeart, FaStar, FaUser, FaTimes } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import Contact from '../components/Contact'
-import Footer from '../components/Footer';
+import Footer from '../components/Footer';          
 
 export default function Listing() {
     SwiperCore.use([Navigation, EffectFade, Pagination]);
@@ -287,21 +287,33 @@ export default function Listing() {
 
                                 {/* Right Column - Price and Contact */}
                                 <div className="md:col-span-1">
-                                    <div className="sticky top-8">
-                                        <div className="bg-gray-50 rounded-xl p-6">
-                                            <div className="mb-6">
-                                                <p className="text-3xl font-bold text-gray-900">
-                                                    ${listing.offer ? 
-                                                        listing.discountPrice.toLocaleString('en-US') : 
-                                                        listing.regularPrice.toLocaleString('en-US')}
-                                                    {listing.type === 'rent' && ' / month'}
-                                                </p>
-                                                {listing.offer && (
-                                                    <p className="text-sm text-gray-500 line-through">
-                                                        ${listing.regularPrice.toLocaleString('en-US')}
-                                                    </p>
-                                                )}
-                                            </div>
+  <div className="sticky top-8">
+    <div className="bg-gray-50 rounded-xl p-6">
+      <div className="mb-6">
+        <p className="text-3xl font-bold text-gray-900">
+          ${listing.offer ? 
+            listing.discountPrice.toLocaleString('en-US') : 
+            listing.regularPrice.toLocaleString('en-US')}
+          {listing.type === 'rent' && ' / month'}
+        </p>
+        {listing.offer && (
+          <p className="text-sm text-gray-500 line-through">
+            ${listing.regularPrice.toLocaleString('en-US')}
+          </p>
+        )}
+      </div>
+
+      {currentUser && listing.userRef !== currentUser._id && (
+        <button
+          onClick={() => window.location.href = `/payment/${params.listingId}`}
+          className="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg py-4 font-semibold transition-colors duration-300 mb-4"
+        >
+          {listing.type === 'rent' ? 'Pay Rent Now' : 'Purchase Property'}
+        </button>
+      )}
+    </div> {/* <-- CLOSE THIS */}
+  </div>   {/* <-- AND THIS */}
+</div>     {/* <-- AND THIS */}
 
                                             {currentUser && listing.userRef !== currentUser._id && !contact && (
                                                 <button
@@ -316,9 +328,6 @@ export default function Listing() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Review Form Modal */}
                     {showReviewForm && (
